@@ -1,4 +1,4 @@
-package com.codvary.linkedlist;
+package com.covary.dsa.linklist;
 
 public class Node {
 
