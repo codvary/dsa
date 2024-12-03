@@ -1,15 +1,15 @@
-package com.codvary.linkedlist.SCLList;
+package com.covary.dsa.linklist.DoubleLinkList;
 
-import com.codvary.linkedlist.Node;
-import com.codvary.linkedlist.SingleLinkedList;
+import com.covary.dsa.linklist.DoubleLinkedList;
+import com.covary.dsa.linklist.Node;
 
-public class SingleCircularLinkedListImpl implements SingleLinkedList {
+public class DoubleLinkedListImpl implements DoubleLinkedList {
 
 	private Node head;
 	private Node tail;
 	private int length;
 
-	public SingleCircularLinkedListImpl() {
+	public DoubleLinkedListImpl() {
 		this.head = null;
 		this.tail = null;
 		this.length = 0;
@@ -18,13 +18,17 @@ public class SingleCircularLinkedListImpl implements SingleLinkedList {
 	@Override
 	public void display() {
 		if (this.head == null) {
-			System.out.print("List has no item!!!");
+			System.out.print("Empty List : Display");
 		} else {
 			Node iNode = this.head;
-			do {
-				System.out.print(iNode.getData() + " -> ");
+			while (iNode != null) {
+				if (iNode.getNext() == null) {
+					System.out.print("[" + iNode.getData() + "]");
+				} else {
+					System.out.print("[" + iNode.getData() + "] -> ");
+				}
 				iNode = iNode.getNext();
-			} while (iNode != this.head);
+			}
 		}
 		System.out.println();
 	}
@@ -35,15 +39,15 @@ public class SingleCircularLinkedListImpl implements SingleLinkedList {
 		if (this.head == null) {
 			this.head = nNode;
 			this.tail = nNode;
-			this.tail.setNext(this.head);
 		} else {
 			if (location == 0) {
 				nNode.setNext(this.head);
+				this.head.setPrev(nNode);
 				this.head = nNode;
-				this.tail.setNext(this.head);
+				this.head.setPrev(null);
 			} else if (location >= this.length) {
-				nNode.setNext(this.head);
 				this.tail.setNext(nNode);
+				nNode.setPrev(this.tail);
 				this.tail = nNode;
 			} else {
 				Node iNode = this.head;
@@ -61,7 +65,7 @@ public class SingleCircularLinkedListImpl implements SingleLinkedList {
 	@Override
 	public void removeNode(int location) {
 		if (this.head == null) {
-			System.out.println("List has no item!!!");
+			System.out.println("Empty List : Remove");
 		} else {
 			if (location == 0) {
 				if (this.head == this.tail) {
@@ -69,19 +73,15 @@ public class SingleCircularLinkedListImpl implements SingleLinkedList {
 					this.tail = null;
 				} else {
 					this.head = this.head.getNext();
-					this.tail.setNext(this.head);
+					this.head.setPrev(null);
 				}
-			} else if (location >= this.length) {
+			} else if (location >= this.length - 1) {
 				if (this.head == this.tail) {
 					this.head = null;
 					this.tail = null;
 				} else {
-					Node iNode = this.head;
-					while (iNode.getNext() != this.tail) {
-						iNode = iNode.getNext();
-					}
-					iNode.setNext(this.head);
-					this.tail = iNode;
+					this.tail = this.tail.getPrev();
+					this.tail.setNext(null);
 				}
 			} else {
 				Node iNode = this.head;
@@ -98,18 +98,38 @@ public class SingleCircularLinkedListImpl implements SingleLinkedList {
 	@Override
 	public boolean search(int data) {
 		if (this.head == null) {
-			System.out.println("List has no item!!!");
+			System.out.println("Empty List : Search");
 		} else {
 			Node iNode = this.head;
-			do {
+			while (iNode != null) {
 				if (iNode.getData() == data) {
 					System.out.println("Found : [" + iNode.getData() + "]");
 					return true;
 				}
 				iNode = iNode.getNext();
-			} while (iNode != this.head);
-			System.out.println("Not Found : (" + data + ")");
+			}
+			System.out.println("Not Found : [" + data + "]");
 		}
 		return false;
 	}
+
+	@Override
+	public void displayReverse() {
+		if (this.head == null) {
+			System.out.print("Empty List : Display");
+		} else {
+			Node iNode = this.tail;
+			while (iNode != null) {
+				if (iNode.getPrev() == null) {
+					System.out.print("[" + iNode.getData() + "]");
+				} else {
+					System.out.print("[" + iNode.getData() + "] -> ");
+				}
+				iNode = iNode.getPrev();
+			}
+		}
+		System.out.println();
+		
+	}
+
 }
