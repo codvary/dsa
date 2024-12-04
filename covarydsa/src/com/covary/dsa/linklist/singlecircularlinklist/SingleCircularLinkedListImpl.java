@@ -1,4 +1,4 @@
-package com.covary.dsa.linklist.SingleCircularLinkList;
+package com.covary.dsa.linklist.singlecircularlinklist;
 
 import com.covary.dsa.linklist.Node;
 import com.covary.dsa.linklist.SingleLinkedList;

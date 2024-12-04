@@ -1,11 +1,12 @@
 package com.covary.dsa.linklist;
 
-import com.covary.dsa.linklist.DoubleLinkList.DoubleLinkedListImpl;
+import com.covary.dsa.linklist.doublecircularlinklist.DoubleCircularLinkedList;
+import com.covary.dsa.linklist.doublelinklist.DoubleLinkedListImpl;
 
 public class MyDoubleLinkedList {
 
 	public static void main(String[] args) {
-		DoubleLinkedList list = new DoubleLinkedListImpl();
+		DoubleLinkedList list = new DoubleCircularLinkedList();
 		list.display();
 		list.addNode(70, 0);
 		list.addNode(50, 0);
