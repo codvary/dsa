@@ -22,12 +22,22 @@ public class DoubleLinkedListImpl implements DoubleLinkedList {
 		} else {
 			Node iNode = this.head;
 			while (iNode != null) {
-				if (iNode.getNext() == null) {
-					System.out.print("[" + iNode.getData() + "]");
-				} else {
-					System.out.print("[" + iNode.getData() + "] -> ");
-				}
+				System.out.print("[" + iNode.getData() + "] ->");
 				iNode = iNode.getNext();
+			}
+		}
+		System.out.println();
+	}
+	
+	@Override
+	public void displayReverse() {
+		if (this.head == null) {
+			System.out.print("Empty List : Display Reverse");
+		} else {
+			Node iNode = this.tail;
+			while (iNode != null) {
+				System.out.print("[" + iNode.getData() + "] ->");
+				iNode = iNode.getPrev();
 			}
 		}
 		System.out.println();
@@ -37,6 +47,8 @@ public class DoubleLinkedListImpl implements DoubleLinkedList {
 	public void addNode(int data, int location) {
 		Node nNode = new Node(data);
 		if (this.head == null) {
+			nNode.setPrev(null);
+			nNode.setNext(null);
 			this.head = nNode;
 			this.tail = nNode;
 		} else {
@@ -46,17 +58,20 @@ public class DoubleLinkedListImpl implements DoubleLinkedList {
 				this.head = nNode;
 				this.head.setPrev(null);
 			} else if (location >= this.length) {
+				nNode.setNext(null);
 				this.tail.setNext(nNode);
 				nNode.setPrev(this.tail);
 				this.tail = nNode;
 			} else {
 				Node iNode = this.head;
-				for (int i = 0; i < location - 1; i++) {
+				for(int i = 0; i < location - 1; i++) {
 					iNode = iNode.getNext();
 				}
 				Node nxNode = iNode.getNext();
 				nNode.setNext(nxNode);
+				nxNode.setPrev(nNode);
 				iNode.setNext(nNode);
+				nNode.setPrev(iNode);
 			}
 		}
 		this.length += 1;
@@ -85,14 +100,15 @@ public class DoubleLinkedListImpl implements DoubleLinkedList {
 				}
 			} else {
 				Node iNode = this.head;
-				for (int i = 0; i < location - 1; i++) {
+				for(int i = 0; i < location - 1; i++) {
 					iNode = iNode.getNext();
 				}
 				Node nxNode = iNode.getNext();
 				iNode.setNext(nxNode.getNext());
+				nxNode.getNext().setPrev(iNode);
 			}
-			this.length -= 1;
 		}
+		this.length -= 1;
 	}
 
 	@Override
@@ -112,24 +128,4 @@ public class DoubleLinkedListImpl implements DoubleLinkedList {
 		}
 		return false;
 	}
-
-	@Override
-	public void displayReverse() {
-		if (this.head == null) {
-			System.out.print("Empty List : Display");
-		} else {
-			Node iNode = this.tail;
-			while (iNode != null) {
-				if (iNode.getPrev() == null) {
-					System.out.print("[" + iNode.getData() + "]");
-				} else {
-					System.out.print("[" + iNode.getData() + "] -> ");
-				}
-				iNode = iNode.getPrev();
-			}
-		}
-		System.out.println();
-		
-	}
-
 }

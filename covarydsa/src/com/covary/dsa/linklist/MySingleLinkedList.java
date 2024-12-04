@@ -1,7 +1,6 @@
 package com.covary.dsa.linklist;
 
 import com.covary.dsa.linklist.SingleCircularLinkList.SingleCircularLinkedListImpl;
-import com.covary.dsa.linklist.SingleLinkList.SingleLinkedListImpl;
 
 public class MySingleLinkedList {
 
