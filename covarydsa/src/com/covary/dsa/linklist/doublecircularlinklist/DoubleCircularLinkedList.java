@@ -1,15 +1,15 @@
-package com.covary.dsa.linklist.DoubleLinkList;
+package com.covary.dsa.linklist.doublecircularlinklist;
 
 import com.covary.dsa.linklist.DoubleLinkedList;
 import com.covary.dsa.linklist.Node;
 
-public class DoubleLinkedListImpl implements DoubleLinkedList {
+public class DoubleCircularLinkedList implements DoubleLinkedList {
 
 	private Node head;
 	private Node tail;
 	private int length;
 
-	public DoubleLinkedListImpl() {
+	public DoubleCircularLinkedList() {
 		this.head = null;
 		this.tail = null;
 		this.length = 0;
@@ -21,7 +21,7 @@ public class DoubleLinkedListImpl implements DoubleLinkedList {
 			System.out.print("Empty List : Display");
 		} else {
 			Node iNode = this.head;
-			while (iNode != null) {
+			while (iNode.getNext() != this.head) {
 				System.out.print("[" + iNode.getData() + "] ->");
 				iNode = iNode.getNext();
 			}
@@ -35,7 +35,7 @@ public class DoubleLinkedListImpl implements DoubleLinkedList {
 			System.out.print("Empty List : Display Reverse");
 		} else {
 			Node iNode = this.tail;
-			while (iNode != null) {
+			while (iNode.getPrev() != this.tail) {
 				System.out.print("[" + iNode.getData() + "] ->");
 				iNode = iNode.getPrev();
 			}
@@ -47,18 +47,20 @@ public class DoubleLinkedListImpl implements DoubleLinkedList {
 	public void addNode(int data, int location) {
 		Node nNode = new Node(data);
 		if (this.head == null) {
-			nNode.setPrev(null);
-			nNode.setNext(null);
 			this.head = nNode;
 			this.tail = nNode;
+			nNode.setNext(this.head);
+			this.head.setPrev(nNode);
 		} else {
 			if (location == 0) {
 				nNode.setNext(this.head);
 				this.head.setPrev(nNode);
 				this.head = nNode;
-				this.head.setPrev(null);
+				this.head.setPrev(this.tail);
+				this.tail.setNext(this.head);
 			} else if (location >= this.length) {
-				nNode.setNext(null);
+				nNode.setNext(this.head);
+				this.head.setPrev(nNode);
 				this.tail.setNext(nNode);
 				nNode.setPrev(this.tail);
 				this.tail = nNode;
@@ -88,7 +90,8 @@ public class DoubleLinkedListImpl implements DoubleLinkedList {
 					this.tail = null;
 				} else {
 					this.head = this.head.getNext();
-					this.head.setPrev(null);
+					this.head.setPrev(this.tail);
+					this.tail.setNext(this.head);
 				}
 			} else if (location >= this.length - 1) {
 				if (this.head == this.tail) {
@@ -96,7 +99,8 @@ public class DoubleLinkedListImpl implements DoubleLinkedList {
 					this.tail = null;
 				} else {
 					this.tail = this.tail.getPrev();
-					this.tail.setNext(null);
+					this.tail.setNext(this.head);
+					this.head.setPrev(this.tail);
 				}
 			} else {
 				Node iNode = this.head;
@@ -117,7 +121,7 @@ public class DoubleLinkedListImpl implements DoubleLinkedList {
 			System.out.println("Empty List : Search");
 		} else {
 			Node iNode = this.head;
-			while (iNode != null) {
+			while (iNode.getNext() != this.head) {
 				if (iNode.getData() == data) {
 					System.out.println("Found : [" + iNode.getData() + "]");
 					return true;
@@ -128,4 +132,5 @@ public class DoubleLinkedListImpl implements DoubleLinkedList {
 		}
 		return false;
 	}
+
 }

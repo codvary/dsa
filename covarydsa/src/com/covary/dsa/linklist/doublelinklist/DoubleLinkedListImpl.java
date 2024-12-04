@@ -1,15 +1,15 @@
-package com.covary.dsa.linklist.SingleLinkList;
+package com.covary.dsa.linklist.doublelinklist;
 
+import com.covary.dsa.linklist.DoubleLinkedList;
 import com.covary.dsa.linklist.Node;
-import com.covary.dsa.linklist.SingleLinkedList;
 
-public class SingleLinkedListImpl implements SingleLinkedList {
+public class DoubleLinkedListImpl implements DoubleLinkedList {
 
 	private Node head;
 	private Node tail;
 	private int length;
 
-	public SingleLinkedListImpl() {
+	public DoubleLinkedListImpl() {
 		this.head = null;
 		this.tail = null;
 		this.length = 0;
@@ -22,12 +22,22 @@ public class SingleLinkedListImpl implements SingleLinkedList {
 		} else {
 			Node iNode = this.head;
 			while (iNode != null) {
-				if (iNode.getNext() == null) {
-					System.out.print("[" + iNode.getData() + "]");
-				} else {
-					System.out.print("[" + iNode.getData() + "] -> ");
-				}
+				System.out.print("[" + iNode.getData() + "] ->");
 				iNode = iNode.getNext();
+			}
+		}
+		System.out.println();
+	}
+	
+	@Override
+	public void displayReverse() {
+		if (this.head == null) {
+			System.out.print("Empty List : Display Reverse");
+		} else {
+			Node iNode = this.tail;
+			while (iNode != null) {
+				System.out.print("[" + iNode.getData() + "] ->");
+				iNode = iNode.getPrev();
 			}
 		}
 		System.out.println();
@@ -37,23 +47,31 @@ public class SingleLinkedListImpl implements SingleLinkedList {
 	public void addNode(int data, int location) {
 		Node nNode = new Node(data);
 		if (this.head == null) {
+			nNode.setPrev(null);
+			nNode.setNext(null);
 			this.head = nNode;
 			this.tail = nNode;
 		} else {
 			if (location == 0) {
 				nNode.setNext(this.head);
+				this.head.setPrev(nNode);
 				this.head = nNode;
+				this.head.setPrev(null);
 			} else if (location >= this.length) {
+				nNode.setNext(null);
 				this.tail.setNext(nNode);
+				nNode.setPrev(this.tail);
 				this.tail = nNode;
 			} else {
 				Node iNode = this.head;
-				for (int i = 0; i < location - 1; i++) {
+				for(int i = 0; i < location - 1; i++) {
 					iNode = iNode.getNext();
 				}
 				Node nxNode = iNode.getNext();
 				nNode.setNext(nxNode);
+				nxNode.setPrev(nNode);
 				iNode.setNext(nNode);
+				nNode.setPrev(iNode);
 			}
 		}
 		this.length += 1;
@@ -70,29 +88,27 @@ public class SingleLinkedListImpl implements SingleLinkedList {
 					this.tail = null;
 				} else {
 					this.head = this.head.getNext();
+					this.head.setPrev(null);
 				}
 			} else if (location >= this.length - 1) {
 				if (this.head == this.tail) {
 					this.head = null;
 					this.tail = null;
 				} else {
-					Node iNode = this.head;
-					while (iNode.getNext() != this.tail) {
-						iNode = iNode.getNext();
-					}
-					iNode.setNext(null);
-					this.tail = iNode;
+					this.tail = this.tail.getPrev();
+					this.tail.setNext(null);
 				}
 			} else {
 				Node iNode = this.head;
-				for (int i = 0; i < location - 1; i++) {
+				for(int i = 0; i < location - 1; i++) {
 					iNode = iNode.getNext();
 				}
 				Node nxNode = iNode.getNext();
 				iNode.setNext(nxNode.getNext());
+				nxNode.getNext().setPrev(iNode);
 			}
-			this.length -= 1;
 		}
+		this.length -= 1;
 	}
 
 	@Override
@@ -112,5 +128,4 @@ public class SingleLinkedListImpl implements SingleLinkedList {
 		}
 		return false;
 	}
-
 }
